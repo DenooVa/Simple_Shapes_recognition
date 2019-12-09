@@ -59,8 +59,7 @@ model.summary()
 # training
 history = model.fit_generator(
     train_data_gen,
-    epochs=epochs,
-    validation_data=val_data_gen,
+    epochs=epochs
 )
 
 # visualizing
@@ -81,3 +80,8 @@ plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
 plt.show()
+
+test_data_gen = validation_image_generator.flow_from_directory(
+    directory='/home/denova/Documents/py_projects/HW2/Shapes/test',
+    target_size=(IMG_HEIGHT, IMG_WIDTH),
+    class_mode='binary')
