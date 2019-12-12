@@ -64,7 +64,7 @@ elif np.argmax(prediction[0]) == 4:
 elif np.argmax(prediction[0]) == 5:
     print('triangle')
 # visualize
-acc = history.history['accuracy']
+acc = history.history['acc']
 loss = history.history['loss']
 epochs_range = range(20)
 plt.figure(figsize=(8, 8))
