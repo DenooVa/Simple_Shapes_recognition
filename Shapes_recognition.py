@@ -50,6 +50,7 @@ test = image_generator.flow_from_directory(
     target_size = (28,28),
     batch_size=1
 )
+model.save('/home/denova/Documents/py_projects/HW2')
 prediction = model.predict(test)
 if np.argmax(prediction[0]) == 0:
     print('circle')  
