@@ -18,7 +18,7 @@ image_generator = ImageDataGenerator(
 train_data_gen = image_generator.flow_from_directory(
     directory='/home/denova/Documents/py_projects/HW2/train',
     target_size=(28,28),
-    batch_size=377,
+    batch_size=412,
     color_mode='rgb'
 )
 model = keras.Sequential([
@@ -50,22 +50,24 @@ test = image_generator.flow_from_directory(
     target_size = (28,28),
     batch_size=1
 )
-model.save('/home/denova/Documents/py_projects/HW2')
 prediction = model.predict(test)
 if np.argmax(prediction[0]) == 0:
-    print('circle')  
+    print('Line')  
 elif np.argmax(prediction[0]) == 1:
-    print('inf')
+    print('circle')
 elif np.argmax(prediction[0]) == 2:
-    print('line')
+    print('inf')
 elif np.argmax(prediction[0]) == 3:
     print('pentagon')
 elif np.argmax(prediction[0]) == 4:
     print('square')
 elif np.argmax(prediction[0]) == 5:
     print('triangle')
+#saving
+model.save('/home/denova/Documents/py_projects/HW2/model.h5')
+model.save_weights('/home/denova/Documents/py_projects/HW2/model_weights.h5')
 # visualize
-acc = history.history['acc']
+acc = history.history['accuracy']
 loss = history.history['loss']
 epochs_range = range(20)
 plt.figure(figsize=(8, 8))
