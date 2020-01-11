@@ -1,26 +1,26 @@
 # importings
-import tkinter
-import tensorflow
 from keras.models import Sequential
 from keras.layers import Dense, Conv2D, Flatten, Dropout, MaxPooling2D
 from keras.preprocessing.image import ImageDataGenerator
 import keras
+from keras import backend as K
 import matplotlib.pyplot as plt
 import numpy as np
+import tensorflow as tf
 # The 1./255 is to convert from uint8 to float32 in range [0,1].
 image_generator = ImageDataGenerator(
     rescale=1./255,
+    # data augmentation
     rotation_range=45,
-    # width_shift_range=.15,
-    # height_shift_range=.15,
-    vertical_flip=True
+    vertical_flip=True,
+    horizontal_flip=True
     )
 train_data_gen = image_generator.flow_from_directory(
-    directory='/home/denova/Documents/py_projects/HW2/train',
+    directory='train',
     target_size=(28,28),
-    batch_size=412,
+    batch_size=204,
     color_mode='rgb'
-)
+    )
 model = keras.Sequential([
     Conv2D(16, 3, padding='same', activation='relu', input_shape=(28,28,3)),
     MaxPooling2D(),
@@ -39,33 +39,14 @@ model.compile(optimizer='rmsprop',
               loss='categorical_crossentropy',
               metrics=['accuracy'])
 model.summary()
-class_names = list(train_data_gen.class_indices.keys())
 history = model.fit_generator(
-    train_data_gen,
-    steps_per_epoch= train_data_gen.n // 10,
-    epochs= 20
-    )
-test = image_generator.flow_from_directory(
-    directory='/home/denova/Documents/py_projects/HW2/test',
-    target_size = (28,28),
-    batch_size=1
-)
-prediction = model.predict(test)
-if np.argmax(prediction[0]) == 0:
-    print('Line')  
-elif np.argmax(prediction[0]) == 1:
-    print('circle')
-elif np.argmax(prediction[0]) == 2:
-    print('inf')
-elif np.argmax(prediction[0]) == 3:
-    print('pentagon')
-elif np.argmax(prediction[0]) == 4:
-    print('square')
-elif np.argmax(prediction[0]) == 5:
-    print('triangle')
+        train_data_gen,
+        steps_per_epoch= train_data_gen.n // 10,
+        epochs= 30
+        )
 #saving
-model.save('/home/denova/Documents/py_projects/HW2/model.h5')
-model.save_weights('/home/denova/Documents/py_projects/HW2/model_weights.h5')
+model.save('model.h5')
+model.save_weights('model_weights.h5')
 # visualize
 acc = history.history['accuracy']
 loss = history.history['loss']
